@@ -73,6 +73,8 @@ func (z *Zip) AddFile(path string, file *os.File) error {
 	}
 	header.Name = path
 	header.Method = zip.Deflate
+	header.CreatorVersion = 3 << 8    // indicates Unix
+	header.ExternalAttrs = 0777 << 16 // -rwxrwxrwx file permissions
 	header.SetModTime(time.Unix(0, 0))
 
 	zippedFile, err := z.writer.CreateHeader(header)
